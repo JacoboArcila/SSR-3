@@ -1,118 +1,92 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import Carousel from "@/components/carousel/Carousel";
+import { MainHome, SuggestionsStyle, SuggestionCarousel, Day, Oldies, Profile, Discover } from "@/styles/Home.styles";
+import Image from "next/image";
+import React from "react";
+import Infinite from "@components/InfiniteCarrousel/Infinite";
+import Search from "@components/search/Search";
+import fetchMoviesWithTop, { fetchMovies, fetchMoviesDate } from "@/service/movies/movies.service";
 
-const inter = Inter({ subsets: ['latin'] })
+export default function Home({ response, moviesTop, moviesOld }) {
+	return (
+		<>
+			<MainHome>
+				<h1 className="title">Reseñas de series y películas al instante</h1>
+				<h4 className="mainHome_p">
+					Desde éxitos de taquilla hasta joyas ocultas, Ecran te ofrece una visión única del mundo del cine y la
+					televisión, todo a solo un clic de distancia.
+				</h4>
+				<Search showAutocomplete={true} />
+			</MainHome>
+			{/* <InfiniteCarrousel /> */}
+			<Infinite />
+			<SuggestionsStyle id="sugerencias">
+				<h2 className="suggestion_title">Top del día</h2>
+				<p className="suggestion_p">
+					De clásicos atemporales a gemas contemporáneas, estas recomendaciones te llevarán a un viaje inolvidable en el
+					fascinante mundo del entretenimiento
+				</p>
+				<SuggestionCarousel>
+					<Carousel movies={moviesTop} top={true} />
+				</SuggestionCarousel>
+			</SuggestionsStyle>
+			<Day>
+				<h2 className="day_title">Género del dia</h2>
+				<p className="day_p">
+					Descubre una sugerencia diferente cada día para explorar nuevos títulos y géneros cinematográficos. ¡Encuentra
+					emocionantes series y películas que te sorprenderán!
+				</p>
+				<Carousel movies={response} top={false} />
+			</Day>
+			{/** en esta seccion se mostrara el carrousel de series */}
+			{/* <Day>
+				<h2 className="day_title">se supone que son las series</h2>
+				<p className="day_p">
+					Sumérgete en nuestro emocionante mundo del entretenimiento cinematografico .En esta sección, te adentrarás en
+					reseñas apasionantes de series de suspenso y otros géneros que seguramente captarán tu interés.!
+				</p>
+				<CarouselSeries series={responseSeries} />
+			</Day> */}
+			{/** hasta aqui se implementa */}
+			<Oldies id="proximamente">
+				<h2 className="oldies_title">Oldies but Goodies</h2>
+				<p className="oldies_p">
+					Un Viaje en el Tiempo a los Clásicos Cinematográficos. Redescubre las joyas atemporales que continúan
+					cautivando con su encanto único y narrativas inolvidables.
+				</p>
+				<Carousel movies={moviesOld} top={false} />
+			</Oldies>
+			<Profile>
+				<h2 className="profile_title">Crea tu perfil personalizado</h2>
+				<p className="profile_p">
+					Con un perfil personalizado, podrás guardar tus reseñas favoritas y mantener un registro de tus películas y
+					series más queridas. Además, disfruta de la libertad de redactar comentarios y compartir tus opiniones con
+					nuestra comunidad de amantes del cine y la televisión.
+				</p>
+				<div className="profile_img">
+					<Image src="images/home/Profile.svg" alt="Profile" width={768} height={400} />
+				</div>
+			</Profile>
+			<Discover>
+				<h1 className="discover_title">¿Listo para empezar?</h1>
+				<h4 className="discover_h4">
+					Descubre críticas apasionantes de tus series y películas favoritas, y encuentra gemas ocultas que te dejarán
+					sin aliento.
+				</h4>
+				{/* <div className="discover_buscador"></div> */}
+			</Discover>
+		</>
+	);
+}
 
-export default function Home() {
-  return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+export async function getServerSideProps() {
+	const response = await fetchMovies();
+	const moviesTop = await fetchMoviesWithTop();
+	const moviesOld = await fetchMoviesDate(2000, 2004);
+	return {
+		props: {
+			response,
+			moviesTop,
+			moviesOld,
+		},
+	};
 }
